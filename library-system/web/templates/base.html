@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library System - Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">Library Demo</a>
+    <div class="navbar-nav">
+      <a class="nav-link" href="/">Accueil</a>
+      <a class="nav-link" href="/users/register">Créer utilisateur</a>
+      <a class="nav-link" href="/books/search">Chercher livre</a>
+      <a class="nav-link" href="/borrows">Emprunt / Retour</a>
+      <a class="nav-link" href="/borrows/active">Emprunts actifs</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert {{'alert-success' if category=='success' else 'alert-danger'}}" role="alert">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

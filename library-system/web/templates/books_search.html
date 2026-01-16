@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Livres</h4>
+</div>
+
+<!-- ===== Recherche par ISBN ===== -->
+<div class="card mb-4">
+  <div class="card-header">
+    Rechercher un livre (ISBN)
+  </div>
+  <div class="card-body">
+    <form method="post" class="row g-3">
+      <input type="hidden" name="action" value="search">
+
+      <div class="col-md-6">
+        <label class="form-label">ISBN</label>
+        <input name="isbn" class="form-control" placeholder="ex: 978-..." required>
+      </div>
+
+      <div class="col-12">
+        <button class="btn btn-primary">Chercher</button>
+      </div>
+    </form>
+
+    {% if book %}
+      <hr>
+      <h6 class="mb-3">Résultat</h6>
+
+      <div class="row g-3">
+        <div class="col-md-8">
+          <div class="fw-bold">{{ book["title"] }}</div>
+          <div class="text-muted">{{ book["author"] }} — {{ book["category"] }}</div>
+          <div class="mt-2"><span class="badge text-bg-secondary">ISBN</span> {{ book["isbn"] }}</div>
+        </div>
+
+        <div class="col-md-4 text-md-end">
+          {% if book["available_copies"]|int > 0 %}
+            <span class="badge text-bg-success">
+              Disponible ({{ book["available_copies"] }}/{{ book["total_copies"] }})
+            </span>
+          {% else %}
+            <span class="badge text-bg-danger">
+              Indisponible (0/{{ book["total_copies"] }})
+            </span>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ===== Liste des livres ===== -->
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>Liste des livres</span>
+  </div>
+
+  <div class="card-body">
+    <form method="post" class="row g-3 align-items-end">
+      <input type="hidden" name="action" value="list">
+
+      <div class="col-md-4">
+        <label class="form-label">Nombre de livres à afficher</label>
+        <input type="number" name="limit" class="form-control" value="{{ limit or 100 }}" min="1" max="500">
+      </div>
+
+      <div class="col-12">
+        <button class="btn btn-outline-primary">Afficher</button>
+      </div>
+    </form>
+
+    {% if books %}
+      <hr>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>ISBN</th>
+              <th>Titre</th>
+              <th>Auteur</th>
+              <th>Catégorie</th>
+              <th class="text-end">Disponibilité</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in books %}
+              <tr>
+                <td class="text-nowrap">{{ b["isbn"] }}</td>
+                <td>{{ b["title"] }}</td>
+                <td>{{ b["author"] }}</td>
+                <td>{{ b["category"] }}</td>
+
+                <td class="text-end">
+                  {% if b["available_copies"]|int > 0 %}
+                    <span class="badge text-bg-success">
+                      ✅ {{ b["available_copies"] }}/{{ b["total_copies"] }}
+                    </span>
+                  {% else %}
+                    <span class="badge text-bg-danger">
+                      ❌ 0/{{ b["total_copies"] }}
+                    </span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-muted mt-3">
+        Clique sur <strong>Afficher</strong> pour charger la liste.
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

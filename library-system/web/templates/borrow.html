@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Emprunt / Retour</h4>
+<p>On utilise l’email pour retrouver le user_id (users_by_email), puis on exécute borrow/return.</p>
+
+<form method="post" class="row g-3">
+  <div class="col-md-6">
+    <label class="form-label">Email utilisateur</label>
+    <input name="email" class="form-control" required>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">ISBN</label>
+    <input name="isbn" class="form-control" required>
+  </div>
+
+  <div class="col-12 d-flex gap-2">
+    <button class="btn btn-success" name="action" value="borrow">Emprunter</button>
+    <button class="btn btn-warning" name="action" value="return">Retourner</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,70 @@
+services:
+  cassandra-node1:
+    image: cassandra:4.1
+    container_name: cassandra1
+    hostname: cassandra1
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1
+      - CASSANDRA_CLUSTER_NAME=LibraryCluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_NUM_TOKENS=8
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=256M
+    volumes:
+      - cassandra1_data:/var/lib/cassandra
+    networks:
+      - cassandra_network
+
+  cassandra-node2:
+    image: cassandra:4.1
+    container_name: cassandra2
+    hostname: cassandra2
+    ports:
+      - "9043:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1
+      - CASSANDRA_CLUSTER_NAME=LibraryCluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_NUM_TOKENS=8
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=256M
+    volumes:
+      - cassandra2_data:/var/lib/cassandra
+    networks:
+      - cassandra_network
+    depends_on:
+      - cassandra-node1
+
+  cassandra-node3:
+    image: cassandra:4.1
+    container_name: cassandra3
+    hostname: cassandra3
+    ports:
+      - "9044:9042"
+    environment:
+      - CASSANDRA_SEEDS=cassandra1
+      - CASSANDRA_CLUSTER_NAME=LibraryCluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_RACK=rack1
+      - CASSANDRA_NUM_TOKENS=8
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=256M
+    volumes:
+      - cassandra3_data:/var/lib/cassandra
+    networks:
+      - cassandra_network
+    depends_on:
+      - cassandra-node1
+
+volumes:
+  cassandra1_data:
+  cassandra2_data:
+  cassandra3_data:
+
+networks:
+  cassandra_network:
+    driver: bridge

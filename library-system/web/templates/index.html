@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">Démo - Système de Bibliothèque</h3>
+    <p class="card-text">
+      Cette interface web minimaliste montre :
+      <ul>
+        <li>Création d’utilisateurs (users_by_id + users_by_email)</li>
+        <li>Recherche de livres par ISBN (books_by_id)</li>
+        <li>Emprunt/Retour via email + ISBN (borrows_by_user, borrows_by_book, active_borrows_by_user)</li>
+      </ul>
+    </p>
+  </div>
+</div>
+{% endblock %}

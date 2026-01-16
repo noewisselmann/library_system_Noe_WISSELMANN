@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Emprunts actifs (par utilisateur)</h4>
+</div>
+
+<form method="post" class="row g-3 mb-4">
+  <div class="col-md-8">
+    <label class="form-label">User ID (UUID)</label>
+    <input name="user_id" class="form-control" value="{{ user_id }}" required
+           placeholder="ex: 3cea1427-c5cd-42a2-bbfb-a81d4161d8c1">
+    <div class="form-text">
+      Astuce : tu peux récupérer un user_id via la table <code>users_by_email</code> dans cqlsh.
+    </div>
+  </div>
+
+  <div class="col-md-4 d-flex align-items-end">
+    <button class="btn btn-primary w-100">Afficher</button>
+  </div>
+</form>
+
+{% if borrows %}
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>ISBN</th>
+        <th>Titre</th>
+        <th>Date d'emprunt</th>
+        <th>Date limite</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in borrows %}
+      <tr>
+        <td><code>{{ b.isbn }}</code></td>
+        <td>{{ b.book_title }}</td>
+        <td>{{ b.borrow_date }}</td>
+        <td>{{ b.due_date }}</td>
+        <td>
+          {% if b.due_date and b.due_date < now %}
+            <span class="badge text-bg-danger">En retard</span>
+          {% else %}
+            <span class="badge text-bg-success">OK</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}
